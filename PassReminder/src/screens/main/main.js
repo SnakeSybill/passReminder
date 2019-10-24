@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { appTest } from './../../actions/app';
-import { View, Text, TouchableOpacity, Button } from 'react-native';
-//import { Divider } from 'react-native-material-ui';
+import { View, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import { styles } from './style.js';
 import { setAcessoSelecionado } from './../../actions/app';
 
@@ -18,14 +17,23 @@ class Main extends Component {
         }
     }
 
-
     constructor(props) {
         super(props);
     }
 
     verAcesso(item) {
-        debugger;
         this.props.setAcessoSelecionado(item, this.props.navigation);
+    }
+
+    renderBotaoAdicionar() {
+        return(<View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "flex-end" }}>
+            <Button
+                onPress={() => this.props.navigation.navigate('adicionar')}
+                title="Adicionar"
+                color="#000"
+                style={{ heigth: 30 }}
+            />
+        </View>);
     }
 
     render() {
@@ -33,9 +41,12 @@ class Main extends Component {
             return (
                 <View style={styles.container}>
                     <View style={{ flex: 1 }}></View>
-                    <View style={{ flex: 8, alignItems: "center", alignContent: "center", justifyContent: "center", alignSelf: "center" }}>
-                        <Text style={{ fontSize: 18, paddingHorizontal: 20 }}>Você ainda não possui acessos cadastrados</Text>
+                    <View style={{ flex: 8, alignItems: "center", alignContent: "center", justifyContent: "center" }}>
+                        <Text style={{ fontSize: 18}}>Você ainda não possui acessos cadastrados</Text>
                     </View>
+                    {
+                        this.renderBotaoAdicionar()
+                    }
                 </View>
             )
         } else {
@@ -61,23 +72,7 @@ class Main extends Component {
                             ))
                         }
                     </View>
-                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "flex-end" }}>
-                        <Button
-                            onPress={() => {
-                                Alert.alert(
-                                    'Calma lá...',
-                                    'Não implementado ainda',
-                                    [
-                                        { text: 'OK', onPress: () => { } },
-                                    ],
-                                )
-                            }
-                            }
-                            title="Adicionar"
-                            color="#000"
-                            style={{ heigth: 30 }}
-                        />
-                    </View>
+                    {this.renderBotaoAdicionar()}
                 </View>
             )
         }

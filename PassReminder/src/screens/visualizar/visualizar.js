@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { styles } from './style.js';
+import { excluirAcesso } from './../../actions/app';
 
 class Visualizar extends Component {
 
@@ -17,6 +18,11 @@ class Visualizar extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    excluir() {
+        debugger;
+        this.props.excluirAcesso(this.props.navigation);
     }
 
     render() {
@@ -52,14 +58,15 @@ class Visualizar extends Component {
                     } color="#000" />
                     <Button title='Excluir' onPress={() => {
                         Alert.alert(
-                            'Calma lá...',
-                            'Não implementado ainda',
+                            'Excluir acesso?',
+                            'Está certo disso?',
                             [
-                                { text: 'OK', onPress: () => { } },
+                                { text: 'NÃO! Tá doido?', onPress: () => { } },
+                                { text: 'Sim, excluir', onPress: () => { this.excluir() } },
                             ],
                         )
-                    }
-                    } color="#000" />
+                    }}
+                        color="#000" />
                 </View>
             </View >
         )
@@ -74,4 +81,5 @@ const mapStateToProps = state => (
 
 export default connect(mapStateToProps,
     {
+        excluirAcesso
     })(Visualizar);
