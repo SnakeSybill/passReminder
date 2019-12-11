@@ -3,13 +3,15 @@ import {
     SELECIONAR_ACESSO,
     MODIFICA_NOVO_ACESSO,
     ADICIONAR_ACESSO,
-    EXCLUIR_ACESSO
+    EXCLUIR_ACESSO,
+    VISUALIZACAO_AUTORIZADA,
+    AUTORIZACAO_VISUALIZAR
 } from './types';
 
-export const appTest = () => (
+export const autorizacaoVisualizar = autorizado => (
     {
-        type: TEST,
-        payload: {},
+        type: AUTORIZACAO_VISUALIZAR,
+        payload: autorizado,
     }
 )
 
@@ -44,7 +46,6 @@ function dispatchVisualizar(dispatch, acesso, navigation) {
     type: SELECIONAR_ACESSO,
         payload: acesso,
     });
-    debugger;
     navigation.navigate("visualizar");
 }
 
@@ -55,3 +56,10 @@ function dispatchExcluir(dispatch, navigation) {
     });
     navigation.navigate("main");
 }
+
+export const visualizacaoAutorizada = () => (
+    {
+        type: VISUALIZACAO_AUTORIZADA,
+        payload: {},
+    }
+)

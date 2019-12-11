@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { styles } from './style.js';
-import { excluirAcesso } from './../../actions/app';
+import { excluirAcesso, autorizacaoVisualizar, visualizacaoAutorizada } from './../../actions/app';
+import Fingerprint from './../fingerPrint/fingerPrint';
 
 class Visualizar extends Component {
 
@@ -18,14 +19,32 @@ class Visualizar extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            errorMessage: undefined,
+            biometric: undefined,
+            popupShowed: false
+        };
     }
 
     excluir() {
-        debugger;
         this.props.excluirAcesso(this.props.navigation);
     }
 
+    handleFingerprintDismissed = () => {
+        this.setState({ popupShowed: false });
+
+        if (!this.props.autorizacaoVisualizar)
+            this.props.visualizacaoAutorizada();
+    };
+
+    handleFingerprintShowed() {
+        this.setState({ popupShowed: true });
+    };
+
+
     render() {
+        const { errorMessage, biometric, popupShowed } = this.state;
+
         return (
             < View style={styles.container} >
                 <View style={{ flex: 2, alignItems: "center", alignContent: "center", justifyContent: "center" }}>
@@ -34,15 +53,23 @@ class Visualizar extends Component {
                 <View style={{ flex: 3, alignItems: "center", alignContent: "space-around", justifyContent: "space-around", alignSelf: "center" }}>
                     <Text style={{ fontSize: 24 }}><Text style={{ fontStyle: "italic" }}>Login: </Text>{this.props.acessoSelecionado.login}</Text>
                     <Button title='Ver senha?' onPress={() => {
-                        Alert.alert(
-                            'Sua senha é:',
-                            this.props.acessoSelecionado.senha,
-                            [
-                                { text: 'OK', onPress: () => { } },
-                            ],
-                        )
+                        this.handleFingerprintShowed();
                     }
                     } color="#000" />
+
+                    {errorMessage && (
+                        <Text style={styles.errorMessage}>
+                            {errorMessage} {biometric}
+                        </Text>
+                    )}
+
+                    {popupShowed && (
+                        <Fingerprint
+                            style={styles.popup}
+                            handlePopupDismissed={this.handleFingerprintDismissed}
+                        />
+                    )}
+
                 </View>
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "flex-end" }}>
 
@@ -75,11 +102,14 @@ class Visualizar extends Component {
 
 const mapStateToProps = state => (
     {
-        acessoSelecionado: state.app.acessoSelecionado
+        acessoSelecionado: state.app.acessoSelecionado,
+        autorizacaoVisualizar: state.app.autorizacaoVisualizar
     }
 )
 
 export default connect(mapStateToProps,
     {
-        excluirAcesso
+        excluirAcesso,
+        autorizacaoVisualizar,
+        visualizacaoAutorizada
     })(Visualizar);
