@@ -7,7 +7,7 @@ import {
     VISUALIZACAO_AUTORIZADA,
     AUTORIZACAO_VISUALIZAR
 } from './../actions/types';
-import { registros } from './../../resources/registros-real';
+import { registros } from './../../resources/registros';
 import { Alert } from 'react-native';
 
 const acessoVazio = {
